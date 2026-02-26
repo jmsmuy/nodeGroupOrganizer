@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Table Planner</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Wedding Table Planner</h1>
+    <div class="header-actions">
+      <button id="btn-save" title="Save seating data to JSON file">Save</button>
+      <label class="file-label" title="Load seating data from JSON file">
+        Load
+        <input type="file" id="input-load" accept=".json" hidden>
+      </label>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel panel-input">
+      <fieldset id="bounds">
+        <legend>Table size (people per table)</legend>
+        <div class="field">
+          <label for="input-min">Minimum people per table</label>
+          <input type="number" id="input-min" min="0" step="1" value="7">
+        </div>
+        <div class="field">
+          <label for="input-max">Maximum people per table</label>
+          <input type="number" id="input-max" min="0" step="1" value="10">
+        </div>
+        <div class="field">
+          <label for="input-splitting-premium">Splitting Premium Points</label>
+          <input type="number" id="input-splitting-premium" min="0" step="1" value="5" title="Points added to score per table (favors more tables)">
+        </div>
+      </fieldset>
+
+      <fieldset id="nodes-fieldset">
+        <legend>
+          Guests (persons & groups)
+          <button type="button" id="btn-toggle-nodes" class="legend-toggle" aria-label="Collapse list" title="Collapse list">▼</button>
+        </legend>
+        <div id="nodes-list"></div>
+        <button id="btn-add-node">+ Add guest</button>
+      </fieldset>
+
+      <fieldset id="matrix-fieldset">
+        <legend>Likeness between guests</legend>
+        <p class="hint">For each person or group, set how much they'd like to sit with others (0–10).</p>
+        <div id="matrix-container" class="link-list-container"></div>
+      </fieldset>
+
+      <div id="link-modal-overlay" class="modal-overlay" hidden>
+        <div class="modal-dialog">
+          <div class="modal-header">
+            <h3 id="link-modal-title">Likeness from guest</h3>
+            <button type="button" id="link-modal-close" class="modal-close" aria-label="Close">&times;</button>
+          </div>
+          <div id="link-modal-body" class="modal-body"></div>
+        </div>
+      </div>
+
+      <div id="tags-modal-overlay" class="modal-overlay" hidden>
+        <div class="modal-dialog">
+          <div class="modal-header">
+            <h3 id="tags-modal-title">Tags for guest</h3>
+            <button type="button" id="tags-modal-close" class="modal-close" aria-label="Close">&times;</button>
+          </div>
+          <div id="tags-modal-body" class="modal-body"></div>
+          <div class="modal-footer tags-create">
+            <input type="text" id="tags-new-name" placeholder="New tag name">
+            <input type="color" id="tags-new-color" value="#c9a66b" title="Tag color">
+            <label for="tags-new-bonus" class="tags-bonus-label">Points</label>
+            <input type="number" id="tags-new-bonus" min="0" step="1" value="2" title="Points added to matrix">
+            <button type="button" id="tags-create-btn">Create tag</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="fixed-tables-modal-overlay" class="modal-overlay" hidden>
+        <div class="modal-dialog">
+          <div class="modal-header">
+            <h3 id="fixed-tables-modal-title">Fixed tables</h3>
+            <button type="button" id="fixed-tables-modal-close" class="modal-close" aria-label="Close">&times;</button>
+          </div>
+          <div id="fixed-tables-modal-body" class="modal-body"></div>
+        </div>
+      </div>
+
+      <div id="generate-table-modal-overlay" class="modal-overlay" hidden>
+        <div class="modal-dialog">
+          <div class="modal-header">
+            <h3 id="generate-table-modal-title">Generate table</h3>
+            <button type="button" id="generate-table-modal-close" class="modal-close" aria-label="Close">&times;</button>
+          </div>
+          <div id="generate-table-modal-body" class="modal-body"></div>
+          <div class="modal-footer generate-table-footer">
+            <button type="button" id="generate-table-save-btn" class="primary">Save as fixed table</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="run-actions">
+        <button type="button" id="btn-reset-links" class="btn-small">Reset all links</button>
+        <button type="button" id="btn-clear-tag-links" class="btn-small">Delete all tag links</button>
+        <button type="button" id="btn-show-fixed-tables" class="btn-small">See fixed tables</button>
+        <button type="button" id="btn-generate-table" class="btn-small">Generate table</button>
+      </div>
+      <button id="btn-run" class="primary">Find Table Combinations</button>
+
+      <div id="validation-errors" class="errors" hidden></div>
+    </section>
+
+    <section class="panel panel-output">
+      <div class="field-inline" style="margin-bottom:8px">
+        <input type="checkbox" id="input-animate-graph" checked>
+        <label for="input-animate-graph">Animate graph</label>
+      </div>
+      <div id="graph-container"></div>
+      <fieldset id="results-fieldset" hidden>
+        <legend>Table combinations</legend>
+        <div id="results"></div>
+      </fieldset>
+    </section>
+  </main>
+
+  <div id="solver-loading" class="solver-loading" hidden aria-live="polite">
+    <div class="solver-loading-content">
+      <div class="solver-spinner"></div>
+      <p class="solver-loading-text">Finding table combinations…</p>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

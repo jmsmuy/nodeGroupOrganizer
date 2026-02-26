@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node Group Organizer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Node Group Organizer</h1>
+    <div class="header-actions">
+      <button id="btn-save" title="Save data to JSON file">Save</button>
+      <label class="file-label" title="Load data from JSON file">
+        Load
+        <input type="file" id="input-load" accept=".json" hidden>
+      </label>
+    </div>
+  </header>
+
+  <main>
+    <!-- Left panel: inputs -->
+    <section class="panel panel-input">
+      <!-- Group bounds -->
+      <fieldset id="bounds">
+        <legend>Group Bounds (sum of nodeWeights per group)</legend>
+        <div class="field">
+          <label for="input-min">Minimum Combined Weight</label>
+          <input type="number" id="input-min" min="0" step="1" value="0">
+        </div>
+        <div class="field">
+          <label for="input-max">Maximum Combined Weight</label>
+          <input type="number" id="input-max" min="0" step="1" value="100">
+        </div>
+        <div class="field-inline">
+          <input type="checkbox" id="input-allow-free">
+          <label for="input-allow-free">Allow nodes to be left outside groups (free nodes)</label>
+        </div>
+      </fieldset>
+
+      <!-- Nodes -->
+      <fieldset id="nodes-fieldset">
+        <legend>
+          Nodes
+          <button type="button" id="btn-toggle-nodes" class="legend-toggle" aria-label="Collapse list" title="Collapse list">▼</button>
+        </legend>
+        <div id="nodes-list"></div>
+        <button id="btn-add-node">+ Add Node</button>
+      </fieldset>
+
+      <!-- Link weights (list + popup) -->
+      <fieldset id="matrix-fieldset">
+        <legend>Link Weights</legend>
+        <div class="field-inline" style="margin-bottom:8px">
+          <input type="checkbox" id="input-symmetric-links" checked>
+          <label for="input-symmetric-links">Symmetric links (same weight both directions)</label>
+        </div>
+        <p class="hint">For each node, set the link weight to other nodes. Negative = prefer not in same group.</p>
+        <div id="matrix-container" class="link-list-container"></div>
+      </fieldset>
+
+      <div id="link-modal-overlay" class="modal-overlay" hidden>
+        <div class="modal-dialog">
+          <div class="modal-header">
+            <h3 id="link-modal-title">Links from node</h3>
+            <button type="button" id="link-modal-close" class="modal-close" aria-label="Close">&times;</button>
+          </div>
+          <div id="link-modal-body" class="modal-body"></div>
+        </div>
+      </div>
+
+      <div id="tags-modal-overlay" class="modal-overlay" hidden>
+        <div class="modal-dialog">
+          <div class="modal-header">
+            <h3 id="tags-modal-title">Tags for node</h3>
+            <button type="button" id="tags-modal-close" class="modal-close" aria-label="Close">&times;</button>
+          </div>
+          <div id="tags-modal-body" class="modal-body"></div>
+          <div class="modal-footer tags-create">
+            <input type="text" id="tags-new-name" placeholder="New tag name">
+            <input type="color" id="tags-new-color" value="#4f46e5" title="Tag color">
+            <label for="tags-new-bonus" class="tags-bonus-label">Points</label>
+            <input type="number" id="tags-new-bonus" min="0" step="1" value="2" title="Points added to matrix">
+            <button type="button" id="tags-create-btn">Create tag</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="run-actions">
+        <button type="button" id="btn-reset-links" class="btn-small">Reset all links</button>
+        <button type="button" id="btn-clear-tag-links" class="btn-small">Delete all tag links</button>
+      </div>
+      <button id="btn-run" class="primary">Find Groups</button>
+
+      <div id="validation-errors" class="errors" hidden></div>
+    </section>
+
+    <!-- Right panel: graph + results -->
+    <section class="panel panel-output">
+      <div class="field-inline" style="margin-bottom:8px">
+        <input type="checkbox" id="input-animate-graph" checked>
+        <label for="input-animate-graph">Animate graph</label>
+      </div>
+      <div id="graph-container"></div>
+      <fieldset id="results-fieldset" hidden>
+        <legend>Solutions</legend>
+        <div id="results"></div>
+      </fieldset>
+    </section>
+  </main>
+
+  <div id="solver-loading" class="solver-loading" hidden aria-live="polite">
+    <div class="solver-loading-content">
+      <div class="solver-spinner"></div>
+      <p class="solver-loading-text">Finding solutions…</p>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

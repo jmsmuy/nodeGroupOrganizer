@@ -1,0 +1,12 @@
+{
+  "name": "nodegrouporganizer",
+  "version": "1.0.0",
+  "description": "Client-only webapp for organizing nodes into weight-constrained groups that maximize intra-group link weights",
+  "type": "module",
+  "scripts": {
+    "test": "node --test solver.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

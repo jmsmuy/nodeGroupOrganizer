@@ -654,7 +654,7 @@ function openFixedTablesModal() {
   fixedTablesModalBody.innerHTML = '';
   const idToLabel = (id) => state.nodes.find((n) => n.id === id)?.label || id;
   if (state.fixedGroups.length === 0) {
-    fixedTablesModalBody.textContent = 'No fixed tables. Use "Fix Table" on a solution row to fix a table.';
+    fixedTablesModalBody.textContent = 'No fixed subgroups. Use "Fix Subgroup" on a solution row to fix a subgroup.';
   } else {
     const list = document.createElement('ul');
     list.className = 'fixed-tables-list';
@@ -669,7 +669,7 @@ function openFixedTablesModal() {
       btnDel.type = 'button';
       btnDel.className = 'tag-delete-btn';
       btnDel.innerHTML = '&times;';
-      btnDel.title = 'Remove fixed table';
+      btnDel.title = 'Remove fixed subgroup';
       btnDel.addEventListener('click', () => {
         state.fixedGroups.splice(idx, 1);
         saveToLocalStorage();
@@ -911,7 +911,7 @@ function renderResults(solutions, optimal) {
       const fixBtn = document.createElement('button');
       fixBtn.type = 'button';
       fixBtn.className = 'btn-small fix-table-btn';
-      fixBtn.textContent = 'Fix Table';
+      fixBtn.textContent = 'Fix Subgroup';
       fixBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         const nodeIds = gd.nodeIds.slice();

@@ -4,6 +4,8 @@
 
 Client-only web app for organizing **nodes** into **groups** under min/max combined weight, while maximizing the total **link weight** inside groups. No server required; everything runs in the browser.
 
+**Live app:** [https://nodegrouporganizer.onrender.com/](https://nodegrouporganizer.onrender.com/) (generic) · [https://nodegrouporganizer.onrender.com/weddingPlan](https://nodegrouporganizer.onrender.com/weddingPlan) (Wedding Table Planner)
+
 ## What it does
 
 - **Nodes** have a weight (e.g. “number of people”).
